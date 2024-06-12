@@ -1,0 +1,21 @@
+name = "RPA"
+uuid = "b283929e-e2c3-445a-a93e-21ce7c83cc79"
+authors = ["Anjishnu Bose"]
+version = "1.0.0-DEV"
+
+[deps]
+JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+NPZ = "15e1cf62-19b3-5cfa-8e77-841668bca605"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+TightBindingToolkit = "2233325a-6eb3-486f-aff0-670e0939fa7e"
+YAML = "ddb6d928-2868-570f-bddf-ab3f9cf99eb6"
+
+[compat]
+julia = "1.6.7"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
