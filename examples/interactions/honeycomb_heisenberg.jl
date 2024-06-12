@@ -30,5 +30,5 @@ params = [J1Param, J3Param]
 CreateUnitCell!(UC, params)
 
 #####* Saving the unit cell in a JLD2 file
-file_name = "../../saved_models/honeycomb_heisenberg.jld2"
+file_name = "../../saves/interactions/honeycomb_heisenberg.jld2"
 save(file_name, Dict("unit cell" => UC, "parameters" => params))

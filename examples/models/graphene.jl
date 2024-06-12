@@ -27,5 +27,5 @@ params = [t1Param]
 CreateUnitCell!(UC, params)
 
 #####* Saving the unit cell in a JLD2 file
-file_name = "../../saved_models/graphene.jld2"
+file_name = "../../saves/models/graphene.jld2"
 save(file_name, Dict("unit cell" => UC, "parameters" => params))
