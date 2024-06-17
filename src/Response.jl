@@ -1,10 +1,9 @@
 module Response
 
 using LinearAlgebra
-using ..RPA.Preprocess: dress_chis, get_reciprocal_ks
-using ..RPA.Interactions: J_polar, JMats
+using ..RPA.Interactions: interaction
 
-export perform_RPA, minima, maxima, find_peak
+export perform_RPA, minima, maxima, find_instability
 
 #####* Returns the eigenvalues and eigenvectors of the RPA susceptibility matrix at some fixed momentum.
 function perform_RPA(chi::Matrix{ComplexF64}, interaction::Matrix{ComplexF64})::Tuple{Vector{ComplexF64}, Matrix{ComplexF64}}
@@ -46,26 +45,20 @@ function maxima(eigenvalues::Vector{Vector{ComplexF64}},
 end
 
 
-function find_peak(theta::Float64, lambda::Float64, data::Dict ;
+function find_instability(chis::Vector{Matrix{ComplexF64}}, ks::Vector{Vector{Float64}};
         steps::Int = 21, lower::Float64 = 0.0, upper::Float64 = 2.0,
-        ks_entry::String = "ks")::Dict{String, Any}
+        kwargs...)::Dict{String, Any}
 
     current = Float64[]
     check = nothing
-    ##### momentum points.
-    reciprocal_ks = get_reciprocal_ks(data ; entry = ks_entry)
-    ks = data[ks_entry]
-    ks = Vector{eltype(ks)}[eachrow(ks)...]
-    ##### bare susceptibility matrices.
-    chis = dress_chis(data)
-    #####* binary search for the critical |J| at a given theta = tan^{-1}(J3/J1).
+
+    #####* binary search for the critical interaction strength |J| at a given unit cell fixing ratios of interactions.
     for _ in 1:steps
         push!(current, (upper + lower) / 2)
         ##### determining the interaction matrices.
-        J1, J3 = J_polar(current[end], theta)
-        Js = JMats(J1, J3, lambda, reciprocal_ks)
+        interactions = interaction(current, ks ; kwargs...)
         ##### RPA calculation.
-        eigenvalues, eigenvectors = perform_RPA(chis, Js)
+        eigenvalues, eigenvectors = perform_RPA(chis, interactions)
         check = minima(eigenvalues, eigenvectors)
 
         if check["minimum eigenvalue"] < 0.0
@@ -76,33 +69,37 @@ function find_peak(theta::Float64, lambda::Float64, data::Dict ;
     end
 
     if check["minimum eigenvalue"] < 0.0
-        J1, J3 = J_polar(lower, theta)
-        Js = JMats(J1, J3, lambda, reciprocal_ks)
+        interactions = interaction(lower, ks ; kwargs...)
+        eigenvalues, eigenvectors = perform_RPA(chis, interactions)
 
-        eigenvalues, eigenvectors = perform_RPA(chis, Js)
         check = minima(eigenvalues, eigenvectors)
         peak = maxima(eigenvalues, eigenvectors)
 
-        return Dict("J" => lower, check..., maxima...,
-                    "minimum reciprocal momentum" => reciprocal_ks[check["minimum index"]],
+        primitives = get(kwargs, "primitives", [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
+        d = length(primitives[begin])
+
+        return Dict("critical strength" => lower, check..., maxima...,
+                    "minimum reciprocal momentum" => dot.(Ref(ks[check["minimum index"]][1:d]), primitives),
                     "minimum momentum" => ks[check["minimum index"]],
-                    "maximum reciprocal momentum" => reciprocal_ks[peak["maximum index"]],
+                    "maximum reciprocal momentum" => dot.(Ref(ks[check["maximum index"]][1:d]), primitives),
                     "maximum momentum" => ks[peak["maximum index"]])
     else
-        J1, J3 = J_polar(current[end], theta)
-        Js = JMats(J1, J3, lambda, reciprocal_ks)
+        interactions = interaction(current, ks ; kwargs...)
+        eigenvalues, eigenvectors = perform_RPA(chis, interactions)
 
-        eigenvalues, eigenvectors = perform_RPA(chis, Js)
         check = minima(eigenvalues, eigenvectors)
         peak = maxima(eigenvalues, eigenvectors)
 
-        return Dict("J" => current[end], check..., maxima...,
-                    "minimum reciprocal momentum" => reciprocal_ks[check["minimum index"]],
+        return Dict("critical strength" => current[end], check..., maxima...,
+                    "minimum reciprocal momentum" => dot.(Ref(ks[check["minimum index"]][1:d]), primitives),
                     "minimum momentum" => ks[check["minimum index"]],
-                    "maximum reciprocal momentum" => reciprocal_ks[peak["maximum index"]],
+                    "maximum reciprocal momentum" => dot.(Ref(ks[check["maximum index"]][1:d]), primitives),
                     "maximum momentum" => ks[peak["maximum index"]])
     end
 end
+
+
+
 
 
 

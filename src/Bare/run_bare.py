@@ -21,26 +21,34 @@ if __name__=="__main__":
     fobj = open(args.input, "r")
     params = yaml.load(fobj, Loader=yaml.CLoader)
     #####* loading the unit cell
-    fobj = open(params["unitcell"], "r")
-    unitcell = yaml.load(fobj, Loader=yaml.CLoader)
+    unitcell = np.load(params["unitcell"]["triqs"])
+    print("Unit cell loaded")
     
     #####* building the triqs model
     model = mdl.triqs_model(unitcell)
-    N = len(unitcell["orbital_names"])/2
+    print("Model built")
+
+    N = int(len(model.orbital_names)/2)
     #####* building the Brillouin zone and a high symmetry path
     ksize = params["k_size"]
     kmesh = model.get_kmesh(n_k=(ksize, ksize, 1))
     ks = np.array([k.value for k in kmesh])
-    path = mdl.k_path(model, params["k_points"])
+    path_vecs, path_plot, path_ticks = mdl.k_path(model, params["k_points"])
     
     #####* building the hamiltonian
     hamiltonian = mdl.hamiltonian(model, ksize)
     bandwidth = mdl.bandwidth(kmesh, hamiltonian)
+    print("Hamiltonian built")
+    
     
     #####* fillings vs chemical potential
     beta = params["beta"]
-    n = params["n_mus"]
-    fillings, mus = mdl.filling_vs_mu(beta, n, hamiltonian, kmesh)
+    if "values" in params["mus"]:
+        mus = params["mus"]["values"]
+    else:
+        mus = np.linspace(*bandwidth, params["mus"]["n"])
+
+    fillings = [mdl.get_filling(mu, beta, hamiltonian, kmesh) for mu in mus]
     
     print("Starting TRIQS calculations...")
     
@@ -50,7 +58,7 @@ if __name__=="__main__":
         chi00 = br.bare_chi(beta, params["n_matsubara"], mu, hamiltonian)
         
         if params["contract"]=="path":
-            ks_contract = path
+            ks_contract = path_vecs
         else:
             ks_contract = ks
         

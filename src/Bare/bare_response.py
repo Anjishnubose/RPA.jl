@@ -38,6 +38,7 @@ def S(i:int, direction:int, N: int) -> np.matrix:
 def chi_contraction(chi, i:int, j:int, direction:int, N: int):
     Si = S(i, direction, N)
     Sj = S(j, direction, N)
+    print(Si)
     
     chi_contracted = chi[0, 0, 0, 0].copy()
     chi_contracted.data[:] = np.einsum('wqabcd,ab,cd->wq', chi.data, Si, Sj)[:, :]
@@ -57,16 +58,13 @@ def interpolate_chi(chi_contracted, ks):
 
 #####* interpolate the contracted susceptibility tensor along a high symmetry path in the Brillouin zone
 def interpolate_chi_mat(chi, direction:int, N: int, ks):
-
+    print(ks.shape)
     chiMats = np.zeros([ks.shape[0], N, N], dtype=complex)
     
     for i in range(N):
-        for j in range(i+1):
+        for j in range(N):
             
             chi_contracted = chi_contraction(chi, i, j, direction, N)
             chiMats[:, i, j] += interpolate_chi(chi_contracted, ks)
-
-            if i != j:
-                chiMats[:, j, i] += chiMats[:, i, j].conj() 
     
     return chiMats

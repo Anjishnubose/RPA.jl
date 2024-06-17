@@ -25,10 +25,8 @@ const J3  =   +0.25
 J3Param   =   Param(J3, 2)
 AddIsotropicBonds!(J3Param, UC , thirdNNdistance, Matrix{ComplexF64}(I, 3, 3) , "J3")
 
-#####* Adding the parameter to the unit cell
 params = [J1Param, J3Param]
-CreateUnitCell!(UC, params)
 
 #####* Saving the unit cell in a JLD2 file
 file_name = "../../saves/interactions/honeycomb_heisenberg.jld2"
-save(file_name, Dict("unit cell" => UC, "parameters" => params))
+save(file_name, Dict("parameters" => params))

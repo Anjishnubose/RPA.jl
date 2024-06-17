@@ -16,7 +16,7 @@ export interaction
 
 include("Response.jl")
 using .Response
-export perform_RPA, minima, maxima
+export perform_RPA, minima, maxima, find_instability
 
 
 end
