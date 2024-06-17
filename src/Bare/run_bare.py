@@ -68,6 +68,7 @@ if __name__=="__main__":
             output[labels[direction]] = chi
 
         print("contraction completed")
+  
 
         fileName = params["output"] + f"_beta={beta}_mu={np.round(mu, 3)}.npz"
         np.savez(fileName, *output,
