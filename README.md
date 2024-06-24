@@ -4,9 +4,9 @@
 
 WORK IN PROGRESS
 ## To do list
-- add an example of input files
-- write a script from beginning to end
+- ~~add an example of input files~~ : `graphene.yml` in ./Inputs/
+- ~~write a script from beginning to end~~ : `run_RPA.jl` in ./src/
 - test on simple cases
 - write readme instructions
 - write plotting code
-- simplify RPA code
+- ~~simplify RPA code~~ : simplified, but can be optimized.
