@@ -1,8 +1,6 @@
-k_size: 64
+k_size: 96
 contract: "path"
-unitcell:
-  julia: "/home/anjishnubose/Research/Repos/RPA.jl/saves/models/bcao_Dirac.jld2"
-  triqs: "/home/anjishnubose/Research/Repos/RPA.jl/saves/models/bcao_Dirac.npz"
+beta: 20.0
 n_matsubara: 60
 output: "/home/anjishnubose/Research/Repos/RPA.jl/saves/data/bcao_Dirac"
 k_points:
@@ -23,8 +21,10 @@ directions:
   - 1
   - 2
   - 3
+unitcell:
+  julia: "/home/anjishnubose/Research/Repos/RPA.jl/saves/models/bcao_Dirac.jld2"
+  triqs: "/home/anjishnubose/Research/Repos/RPA.jl/saves/models/bcao_Dirac.npz"
 mus:
   values:
     - 0.0
   n: 1
-beta: 20.0
