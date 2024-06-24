@@ -15,7 +15,6 @@ function parse_commandline()
 end
 
 
-
 if abspath(PROGRAM_FILE) == @__FILE__
 
     include("../RPA.jl")
@@ -28,7 +27,7 @@ if abspath(PROGRAM_FILE) == @__FILE__
 
     unitcell = model["unit cell"]
     parameters = model["parameters"]
-    triqs_input = input["unitcell"]["julia"][1:end-5] * "_test.npz"
+    triqs_input = input["unitcell"]["julia"][1:end-5] * ".npz"
 
     parse_unitcell(unitcell, triqs_input)
 

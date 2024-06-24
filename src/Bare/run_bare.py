@@ -47,7 +47,11 @@ if __name__=="__main__":
         mus = params["mus"]["values"]
     else:
         mus = np.linspace(*bandwidth, params["mus"]["n"])
-
+        params["mus"]["values"] = mus
+        
+        with open(args.input, 'w') as file:
+            yaml.dump(params, file)
+    
     fillings = [mdl.get_filling(mu, beta, hamiltonian, kmesh) for mu in mus]
     
     print("Starting TRIQS calculations...")
@@ -68,12 +72,15 @@ if __name__=="__main__":
             output[labels[direction]] = chi
 
         print("contraction completed")
-  
+
 
         fileName = params["output"] + f"_beta={beta}_mu={np.round(mu, 3)}.npz"
-        np.savez(fileName, *output,
-                    beta = beta, mu = mu, filling=fillings[index],
-                    ks=ks_contract, reciprocal = kmesh.bz.units, primitives=model.units)
+        np.savez(fileName, **output,
+                    beta = beta, mu = mu, filling=fillings[index], 
+                    primitives=model.units, reciprocal = kmesh.bz.units, 
+                    ks = ks, path = path_vecs, path_plot = path_plot, path_ticks = path_ticks,
+                    contracted = ks_contract, 
+                    bandwidth = np.array(bandwidth), bands = np.array([mdl.energies(k, hamiltonian) for k in path_vecs]))
     
 
 

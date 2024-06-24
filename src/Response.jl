@@ -22,8 +22,10 @@ function perform_RPA(chis::Vector{Matrix{ComplexF64}}, interactions::Vector{Matr
 end
 
 #####* returns the eigenvalue and eigenvector corresponding to the minimum eigenvalue over all momenta.
-function minima(eigenvalues::Vector{Vector{ComplexF64}},
-        eigenvectors::Vector{Matrix{ComplexF64}})::Dict{String, Any}
+function minima(eigenstates::Vector{Tuple{Vector{ComplexF64}, Matrix{ComplexF64}}})::Dict{String, Any}
+
+    eigenvalues = getindex.(eigenstates, 1)
+    eigenvectors = getindex.(eigenstates, 2)
 
     minEigs = getindex.(eigenvalues, 1)
     value, index = findmin(real.(minEigs))
@@ -33,8 +35,10 @@ function minima(eigenvalues::Vector{Vector{ComplexF64}},
 end
 
 #####* returns the eigenvalue and eigenvector corresponding to the maximum eigenvalue over all momenta.
-function maxima(eigenvalues::Vector{Vector{ComplexF64}},
-        eigenvectors::Vector{Matrix{ComplexF64}})::Dict{String, Any}
+function maxima(eigenstates::Vector{Tuple{Vector{ComplexF64}, Matrix{ComplexF64}}})::Dict{String, Any}
+
+    eigenvalues = getindex.(eigenstates, 1)
+    eigenvectors = getindex.(eigenstates, 2)
 
     n = length(eigenvalues[begin])
     minEigs = getindex.(eigenvalues, n)
@@ -46,7 +50,7 @@ end
 
 
 function find_instability(chis::Vector{Matrix{ComplexF64}}, ks::Vector{Vector{Float64}};
-        steps::Int = 21, lower::Float64 = 0.0, upper::Float64 = 2.0,
+        steps::Int = 25, lower::Float64 = 0.0, upper::Float64 = 10.0,
         kwargs...)::Dict{String, Any}
 
     current = Float64[]
@@ -56,10 +60,11 @@ function find_instability(chis::Vector{Matrix{ComplexF64}}, ks::Vector{Vector{Fl
     for _ in 1:steps
         push!(current, (upper + lower) / 2)
         ##### determining the interaction matrices.
-        interactions = interaction(current, ks ; kwargs...)
+        interactions = interaction(current[end], ks ; kwargs...)
         ##### RPA calculation.
-        eigenvalues, eigenvectors = perform_RPA(chis, interactions)
-        check = minima(eigenvalues, eigenvectors)
+        eigenstates = perform_RPA(chis, interactions)
+
+        check = minima(eigenstates)
 
         if check["minimum eigenvalue"] < 0.0
             upper = current[end]
@@ -70,31 +75,37 @@ function find_instability(chis::Vector{Matrix{ComplexF64}}, ks::Vector{Vector{Fl
 
     if check["minimum eigenvalue"] < 0.0
         interactions = interaction(lower, ks ; kwargs...)
-        eigenvalues, eigenvectors = perform_RPA(chis, interactions)
+        eigenstates = perform_RPA(chis, interactions)
 
-        check = minima(eigenvalues, eigenvectors)
-        peak = maxima(eigenvalues, eigenvectors)
+        check = minima(eigenstates)
+        peak = maxima(eigenstates)
 
-        primitives = get(kwargs, "primitives", [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]])
+        primitives = get(kwargs, :primitives, [[0.0, 0.0], [0.0, 0.0]])
         d = length(primitives[begin])
 
-        return Dict("critical strength" => lower, check..., maxima...,
-                    "minimum reciprocal momentum" => dot.(Ref(ks[check["minimum index"]][1:d]), primitives),
-                    "minimum momentum" => ks[check["minimum index"]],
-                    "maximum reciprocal momentum" => dot.(Ref(ks[check["maximum index"]][1:d]), primitives),
-                    "maximum momentum" => ks[peak["maximum index"]])
+        k_min = ks[check["minimum index"]]
+        k_max = ks[peak["maximum index"]]
+
+        return Dict("critical strength" => lower, check..., peak...,
+                    "minimum reciprocal momentum" => dot.(Ref(k_min[1:d]), primitives),
+                    "minimum momentum" => k_min,
+                    "maximum reciprocal momentum" => dot.(Ref(k_max[1:d]), primitives),
+                    "maximum momentum" => k_max)
     else
-        interactions = interaction(current, ks ; kwargs...)
-        eigenvalues, eigenvectors = perform_RPA(chis, interactions)
+        interactions = interaction(current[end], ks ; kwargs...)
+        eigenstates = perform_RPA(chis, interactions)
 
-        check = minima(eigenvalues, eigenvectors)
-        peak = maxima(eigenvalues, eigenvectors)
+        check = minima(eigenstates)
+        peak = maxima(eigenstates)
 
-        return Dict("critical strength" => current[end], check..., maxima...,
-                    "minimum reciprocal momentum" => dot.(Ref(ks[check["minimum index"]][1:d]), primitives),
-                    "minimum momentum" => ks[check["minimum index"]],
-                    "maximum reciprocal momentum" => dot.(Ref(ks[check["maximum index"]][1:d]), primitives),
-                    "maximum momentum" => ks[peak["maximum index"]])
+        k_min = ks[check["minimum index"]]
+        k_max = ks[peak["maximum index"]]
+
+        return Dict("critical strength" => lower, check..., peak...,
+                    "minimum reciprocal momentum" => dot.(Ref(k_min[1:d]), primitives),
+                    "minimum momentum" => k_min,
+                    "maximum reciprocal momentum" => dot.(Ref(k_max[1:d]), primitives),
+                    "maximum momentum" => k_max)
     end
 end
 
