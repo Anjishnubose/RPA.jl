@@ -1,8 +1,10 @@
 k_size: 64
 contract: "path"
-beta: 20.0
+unitcell:
+  julia: "/home/anjishnubose/Research/Repos/RPA.jl/saves/models/bcao_Dirac.jld2"
+  triqs: "/home/anjishnubose/Research/Repos/RPA.jl/saves/models/bcao_Dirac.npz"
 n_matsubara: 60
-output: "/home/anjishnubose/Research/Repos/RPA.jl/saves/data/graphene"
+output: "/home/anjishnubose/Research/Repos/RPA.jl/saves/data/bcao_Dirac"
 k_points:
   -
     - 0.0
@@ -25,6 +27,4 @@ mus:
   values:
     - 0.0
   n: 1
-unitcell:
-  julia: "/home/anjishnubose/Research/Repos/RPA.jl/saves/models/graphene.jld2"
-  triqs: "/home/anjishnubose/Research/Repos/RPA.jl/saves/models/graphene.npz"
+beta: 20.0
