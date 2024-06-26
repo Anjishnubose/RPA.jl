@@ -27,11 +27,8 @@ def bare_chi(beta:float, n_matsubara: int, mu: float, ham):
 #####* returns S^a at site i of total sites N where S^a = [rho, Sx, Sy, Sz, rho].
 def S(i:int, direction:int, N: int) -> np.matrix:
     mat = np.zeros((2*N, 2*N), dtype=np.complex128)
-    if direction==0 or direction==4:
-        mat[2*i:2*i+2, 2*i:2*i+2] = paulis[direction]
-    else:
-        mat[2*i:2*i+2, 2*i:2*i+2] = paulis[direction]/2
-        
+    mat[2*i:2*i+2, 2*i:2*i+2] = paulis[direction]/2
+    
     return mat
 
 #####* contract the full rank-4 susceptibility tensor to return a matrix

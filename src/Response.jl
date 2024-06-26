@@ -6,19 +6,26 @@ using ..RPA.Interactions: interaction
 export perform_RPA, minima, maxima, find_instability
 
 #####* Returns the eigenvalues and eigenvectors of the RPA susceptibility matrix at some fixed momentum.
-function perform_RPA(chi::Matrix{ComplexF64}, interaction::Matrix{ComplexF64})::Tuple{Vector{ComplexF64}, Matrix{ComplexF64}}
+function perform_RPA(chi::Matrix{ComplexF64}, interaction::Matrix{ComplexF64} ;
+        return_matrix::Bool = false)
     mat = inv(I + chi * interaction) * chi
-    eigs = eigen(mat)
 
-    values = eigs.values
-    vectors = eigs.vectors
+    if return_matrix
+        return mat
+    else
+        eigs = eigen(mat)
 
-    return (values, vectors)
+        values = eigs.values
+        vectors = eigs.vectors
+
+        return (values, vectors)
+    end
 end
 
 #####* Returns the eigenvalues and eigenvectors of the RPA susceptibility matrix at multiple momenta ks.
-function perform_RPA(chis::Vector{Matrix{ComplexF64}}, interactions::Vector{Matrix{ComplexF64}})
-    return perform_RPA.(chis, interactions)
+function perform_RPA(chis::Vector{Matrix{ComplexF64}}, interactions::Vector{Matrix{ComplexF64}} ;
+        return_matrix::Bool = false)
+    return perform_RPA.(chis, interactions ; return_matrix = return_matrix)
 end
 
 #####* returns the eigenvalue and eigenvector corresponding to the minimum eigenvalue over all momenta.

@@ -1,4 +1,4 @@
-using ArgParse, JLD2, TightBindingToolkit, YAML, NPZ
+using ArgParse, JLD2, TightBindingToolkit, YAML, NPZ, LaTeXStrings, Plots
 
 function parse_commandline()
 
@@ -11,6 +11,10 @@ function parse_commandline()
             required = true
         "--run_bare"
             help = "does the bare susceptibility calculation need to be run in TRIQS."
+            arg_type = Bool
+            default = false
+        "--plot_RPA"
+            help = "does the RPA calculation need to be plotted."
             arg_type = Bool
             default = false
     end
@@ -53,6 +57,9 @@ if abspath(PROGRAM_FILE) == @__FILE__
         println("Bare susceptibility calculation complete!")
     end
 
+    path_labels = [L"%$(label)" for label in input["k_labels"]]
+    push!(path_labels, path_labels[1])
+
     for mu in input["mus"]["values"]
         println("Working on mu = $(mu)...")
         triqs_data = npzread(input["output"] * "_beta=$(input["beta"])_mu=$(round(mu, digits=3)).npz")
@@ -73,6 +80,20 @@ if abspath(PROGRAM_FILE) == @__FILE__
             instability = find_instability(chis, ks; primitives = primitives,
                 subs = subs, localDim=localDim,
                 lookup = lookup)
+
+            critical = instability["critical strength"]
+            strengths = collect(LinRange(0.0, 0.99*critical, 6))[2:end]
+
+            for strength in strengths
+                p = plot_chi(chis, strength, ks; primitives = primitives,
+                    subs = subs, localDim=localDim,
+                    lookup = lookup, path_plot = triqs_data["path_plot"],
+                    path_ticks = triqs_data["path_ticks"],
+                    path_labels = path_labels)
+
+                savefig(input["plots"] * "_chi_beta=$(input["beta"])_mu=$(round(mu, digits=3))_interactionID=$(ind)_strength=$(round(strength, digits=3)).png")
+            end
+
 
             save(input["output"] * "_beta=$(input["beta"])_mu=$(round(mu, digits=3))_interactionID=$(ind).jld2",
                     instability)
