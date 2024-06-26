@@ -6,9 +6,13 @@ function parse_commandline()
 
     @add_arg_table settings begin
         "--input"
-        help = "directory of the input yml file."
-        arg_type = String
-        required = true
+            help = "directory of the input yml file."
+            arg_type = String
+            required = true
+        "--run_bare"
+            help = "does the bare susceptibility calculation need to be run in TRIQS."
+            arg_type = Bool
+            default = false
     end
 
     return parse_args(settings)
@@ -34,6 +38,14 @@ if abspath(PROGRAM_FILE) == @__FILE__
     interactions = load(input["interactions"])["parameters"]
     interaction_values = getproperty.(interactions, :value)
     n_interactions = length(interaction_values[begin])
+
+    #####* running the bare
+    if parsed_args["run_bare"]
+
+        command = `julia --project=../Project.toml ./Bare/run_bare.jl --input=$(parsed_args["input"])`
+        run(command)
+
+    end
 
     for mu in input["mus"]["values"]
         triqs_data = npzread(input["output"] * "_beta=$(input["beta"])_mu=$(round(mu, digits=3)).npz")

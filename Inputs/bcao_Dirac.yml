@@ -2,8 +2,9 @@ k_size: 96
 contract: "path"
 beta: 20.0
 n_matsubara: 60
+triqs_environment: "triqs"
 output: "/home/anjishnubose/Research/Repos/RPA.jl/saves/data/bcao_Dirac"
-plots: "C:/Users/anjis/Documents/RPA.jl/saves/plots/bcao_Dirac"
+plots: "/home/anjishnubose/Research/Repos/RPA.jl/saves/plots/bcao_Dirac"
 k_points:
 - - 0.0
   - 0.0
