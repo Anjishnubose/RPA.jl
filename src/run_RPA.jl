@@ -30,6 +30,7 @@ if abspath(PROGRAM_FILE) == @__FILE__
     localDim = length(input["directions"])
 
     model = load(input["unitcell"]["julia"])
+    println("Unit Cell loaded!")
 
     unitcell = model["unit cell"]
     parameters = model["parameters"]
@@ -41,13 +42,16 @@ if abspath(PROGRAM_FILE) == @__FILE__
 
     #####* running the bare
     if parsed_args["run_bare"]
+        println("Running the bare susceptibility calculation in TRIQS...")
 
         command = `julia --project=../Project.toml ./Bare/run_bare.jl --input=$(parsed_args["input"])`
         run(command)
 
+        println("Bare susceptibility calculation complete!")
     end
 
     for mu in input["mus"]["values"]
+        println("Working on mu = $(mu)...")
         triqs_data = npzread(input["output"] * "_beta=$(input["beta"])_mu=$(round(mu, digits=3)).npz")
 
         primitives = dress_primitives(triqs_data)
@@ -55,8 +59,9 @@ if abspath(PROGRAM_FILE) == @__FILE__
         ks_contracted = triqs_data["contracted"]
         ks = Vector{eltype(ks_contracted)}[eachrow(ks_contracted)...]
 
-        chis = combine_chis(triqs_data, directions = input["directions"], subs = subs)
+        chis = combine_chis(triqs_data; directions = input["directions"], subs = subs)
 
+        println("Starting RPA...")
         for ind in 1:n_interactions
             value = getindex.(interaction_values, ind)
             push!.(getproperty.(interactions, :value), value)

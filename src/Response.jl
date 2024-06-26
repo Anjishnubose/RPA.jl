@@ -73,15 +73,15 @@ function find_instability(chis::Vector{Matrix{ComplexF64}}, ks::Vector{Vector{Fl
         end
     end
 
+    primitives = get(kwargs, :primitives, [[0.0, 0.0], [0.0, 0.0]])
+    d = length(primitives[begin])
+
     if check["minimum eigenvalue"] < 0.0
         interactions = interaction(lower, ks ; kwargs...)
         eigenstates = perform_RPA(chis, interactions)
 
         check = minima(eigenstates)
         peak = maxima(eigenstates)
-
-        primitives = get(kwargs, :primitives, [[0.0, 0.0], [0.0, 0.0]])
-        d = length(primitives[begin])
 
         k_min = ks[check["minimum index"]]
         k_max = ks[peak["maximum index"]]
