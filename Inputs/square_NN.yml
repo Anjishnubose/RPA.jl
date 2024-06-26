@@ -1,0 +1,37 @@
+k_size: 96
+contract: "path"
+output: "/home/anjishnubose/Research/Repos/RPA.jl/saves/data/square_NN"
+k_points:
+  -
+    - 0.0
+    - 0.0
+    - 0.0
+  -
+    - 0.5
+    - 0.0
+    - 0.0
+  -
+    - 0.5
+    - 0.5
+    - 0.0
+mus:
+  values:
+    - 0.0
+    - -0.5
+  n: 1
+unitcell:
+  julia: "/home/anjishnubose/Research/Repos/RPA.jl/saves/models/square_NN.jld2"
+  triqs: "/home/anjishnubose/Research/Repos/RPA.jl/saves/models/square_NN.npz"
+plots: "/home/anjishnubose/Research/Repos/RPA.jl/saves/plots/square_NN"
+n_matsubara: 120
+triqs_environment: "triqs"
+directions:
+  - 1
+  - 2
+  - 3
+beta: 20.0
+k_labels:
+  - "\\Gamma"
+  - "X"
+  - "M"
+interactions: "/home/anjishnubose/Research/Repos/RPA.jl/saves/interactions/square_heisenberg.jld2"

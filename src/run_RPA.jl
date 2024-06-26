@@ -47,6 +47,9 @@ if abspath(PROGRAM_FILE) == @__FILE__
         command = `julia --project=../Project.toml ./Bare/run_bare.jl --input=$(parsed_args["input"])`
         run(command)
 
+        command = `conda run -n $(input["triqs_environment"]) python ./Bare/plot_bare.py $(parsed_args["input"])`
+        run(command)
+
         println("Bare susceptibility calculation complete!")
     end
 
@@ -74,6 +77,7 @@ if abspath(PROGRAM_FILE) == @__FILE__
             save(input["output"] * "_beta=$(input["beta"])_mu=$(round(mu, digits=3))_interactionID=$(ind).jld2",
                     instability)
         end
+        println("RPA complete!")
 
     end
 

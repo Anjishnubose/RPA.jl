@@ -37,14 +37,14 @@ if __name__=="__main__":
     fobj = open(args.input, "r")
     params = yaml.load(fobj, Loader=yaml.CLoader)
     #####* loading the unit cell
-    unitcell = np.load("C:\\Users\\anjis\\Documents\\RPA.jl\\saves\\models\\graphene.npz")
+    unitcell = np.load(params["unitcell"]["triqs"])
     print("Unit cell loaded")
     
     #####* fillings vs chemical potential
     beta = params["beta"]
     mus = params["mus"]["values"]
     
-    outDirectory = "C:\\Users\\anjis\\Documents\\RPA.jl\\saves\\data\\bcao_Dirac"
+    outDirectory = params["output"]
     plotDirectory = params["plots"]
     
     path_labels = [r'${label}$'.format(label = label) for label in params["k_labels"]]
@@ -55,6 +55,7 @@ if __name__=="__main__":
         data = np.load(output)
         
         #####* plotting the bands
+        plt.clf()
         plt.plot(data["path_plot"], data["bands"])
         plt.xticks(data["path_ticks"], path_labels)
         plt.ylabel(r'$\epsilon(\mathbf{k})$')

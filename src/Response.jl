@@ -50,7 +50,7 @@ end
 
 
 function find_instability(chis::Vector{Matrix{ComplexF64}}, ks::Vector{Vector{Float64}};
-        steps::Int = 25, lower::Float64 = 0.0, upper::Float64 = 10.0,
+        steps::Int = 32, lower::Float64 = 0.0, upper::Float64 = 10.0,
         kwargs...)::Dict{String, Any}
 
     current = Float64[]
@@ -87,9 +87,9 @@ function find_instability(chis::Vector{Matrix{ComplexF64}}, ks::Vector{Vector{Fl
         k_max = ks[peak["maximum index"]]
 
         return Dict("critical strength" => lower, check..., peak...,
-                    "minimum reciprocal momentum" => dot.(Ref(k_min[1:d]), primitives),
+                    "minimum reciprocal momentum" => dot.(Ref(k_min[1:d]), primitives) ./ (2*pi),
                     "minimum momentum" => k_min,
-                    "maximum reciprocal momentum" => dot.(Ref(k_max[1:d]), primitives),
+                    "maximum reciprocal momentum" => dot.(Ref(k_max[1:d]), primitives) ./ (2*pi),
                     "maximum momentum" => k_max)
     else
         interactions = interaction(current[end], ks ; kwargs...)
@@ -102,9 +102,9 @@ function find_instability(chis::Vector{Matrix{ComplexF64}}, ks::Vector{Vector{Fl
         k_max = ks[peak["maximum index"]]
 
         return Dict("critical strength" => lower, check..., peak...,
-                    "minimum reciprocal momentum" => dot.(Ref(k_min[1:d]), primitives),
+                    "minimum reciprocal momentum" => dot.(Ref(k_min[1:d]), primitives) ./ (2*pi),
                     "minimum momentum" => k_min,
-                    "maximum reciprocal momentum" => dot.(Ref(k_max[1:d]), primitives),
+                    "maximum reciprocal momentum" => dot.(Ref(k_max[1:d]), primitives) ./ (2*pi),
                     "maximum momentum" => k_max)
     end
 end

@@ -16,14 +16,15 @@ AddBasisSite!( UC , b1 )
 AddBasisSite!( UC , b2 )
 
 #####* Adding a parameter which tracks the nearest neighbor Heisenberg interaction in the spin-spin basis
-const J1  =   -1.0
+const J1  =   +1.0
 J1Param   =   Param(J1, 2)
 AddIsotropicBonds!(J1Param, UC , firstNNdistance, Matrix{ComplexF64}(I, 3, 3) , "J1")
 
 #####* Adding a parameter which tracks the third nearest neighbor Heisenberg interaction in the spin-spin basis
-const J3  =   +0.25
+const J3  =   +0.0
 J3Param   =   Param(J3, 2)
 AddIsotropicBonds!(J3Param, UC , thirdNNdistance, Matrix{ComplexF64}(I, 3, 3) , "J3")
+
 
 params = [J1Param, J3Param]
 
