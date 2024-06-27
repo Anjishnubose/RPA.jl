@@ -33,6 +33,15 @@ AddIsotropicBonds!(VParam, UC , firstNNdistance,
 
 params = [J1Param, UParam, VParam]
 
+#####* multiple different interactions to run RPA on
+values = Dict()
+values["NN_AFM_Heisenberg"] = [1.0, 0.0, 0.0]
+values["NN_FM_Heisenberg"] = [-1.0, 0.0, 0.0]
+values["On-site_repulsive_Hubbard"] = [0.0, 1.0, 0.0]
+values["On-site_attractive_Hubbard"] = [0.0, -1.0, 0.0]
+values["NN_repulsive_density-density"] = [0.0, 0.0, 1.0]
+values["NN_attractive_density-density"] = [0.0, 0.0, -1.0]
+
 #####* Saving the unit cell in a JLD2 file
 file_name = "../../saves/interactions/triangle_general.jld2"
-save(file_name, Dict("parameters" => params))
+save(file_name, Dict("parameters" => params, "values"=>values))

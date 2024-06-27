@@ -4,7 +4,7 @@ using LinearAlgebra, Plots, LaTeXStrings
 using ..RPA.Interactions: interaction
 using ..RPA.Response: perform_RPA
 
-export plot_chi
+export plot_chi, plot_strengthsVsN, plot_QsVsN
 
 
 function plot_chi(chis::Vector{Matrix{ComplexF64}}; kwargs...)
@@ -39,10 +39,64 @@ function plot_chi(chis::Vector{Matrix{ComplexF64}}, strength::Float64, ks::Vecto
 end
 
 
+function plot_strengthsVsN(data::Dict, label::String; kwargs...)
+
+    p = plot(framestyle = :box, grid=false, title=label)
+
+    mus = Float64[]
+    fillings = Float64[]
+    strengths = Float64[]
+
+    for (key, value) in data
+
+        push!(mus, value["mu"])
+        push!(fillings, value["filling"])
+        push!(strengths, value[label]["critical strength"])
+    end
+
+    args = sortperm(mus)
+
+    mus = mus[args]
+    fillings = fillings[args]
+    strengths = strengths[args]
+
+    plot!(fillings, strengths, label = "", lw=2.0, m=:o)
+    xlabel!(L"⟨n⟩")
+    ylabel!(L"\mathcal{I}_c")
+
+    return p
+
+end
 
 
+function plot_QsVsN(data::Dict, label::String; plot_kwargs...)
 
+    p = plot(framestyle = :box, grid=false, title=label, plot_kwargs...)
 
+    mus = Float64[]
+    fillings = Float64[]
+    Qs = Vector{Float64}[]
+
+    for (key, value) in data
+
+        push!(mus, value["mu"])
+        push!(fillings, value["filling"])
+        push!(Qs, value[label]["maximum momentum"])
+    end
+
+    args = sortperm(mus)
+
+    mus = mus[args]
+    fillings = fillings[args]
+    Qs = Qs[args]
+
+    plot!(fillings, norm.(Qs), label = "", lw=2.0, m=:o)
+    xlabel!(L"⟨n⟩")
+    ylabel!(L"|Q_c|")
+
+    return p
+
+end
 
 
 

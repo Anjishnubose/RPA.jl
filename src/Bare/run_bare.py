@@ -46,8 +46,8 @@ if __name__=="__main__":
     if "values" in params["mus"]:
         mus = params["mus"]["values"]
     else:
-        mus = np.linspace(*bandwidth, params["mus"]["n"])
-        params["mus"]["values"] = mus
+        mus = np.array(np.linspace(*bandwidth, params["mus"]["n"]))
+        params["mus"]["values"] = mus.tolist()
         
         with open(args.input, 'w') as file:
             yaml.dump(params, file)

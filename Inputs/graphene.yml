@@ -1,39 +1,54 @@
-k_size: 96
-contract: "path"
-output: "/home/anjishnubose/Research/Repos/RPA.jl/saves/data/graphene"
-k_points:
-  -
-    - 0.0
-    - 0.0
-    - 0.0
-  -
-    - 0.666666666667
-    - 0.333333333333
-    - 0.0
-  -
-    - 0.5
-    - 0.5
-    - 0.0
-mus:
-  values:
-    - -0.5
-    - 0.0
-    - 0.5
-  n: 1
-unitcell:
-  julia: "/home/anjishnubose/Research/Repos/RPA.jl/saves/models/graphene.jld2"
-  triqs: "/home/anjishnubose/Research/Repos/RPA.jl/saves/models/graphene.npz"
-plots: "/home/anjishnubose/Research/Repos/RPA.jl/saves/plots/graphene"
-n_matsubara: 60
-triqs_environment: "triqs"
-directions:
-  - 0
-  - 1
-  - 2
-  - 3
 beta: 20.0
+contract: path
+directions:
+- 0
+- 1
+- 2
+- 3
+interactions: /home/anjishnubose/Research/Repos/RPA.jl/saves/interactions/honeycomb_general.jld2
 k_labels:
-  - "\\Gamma"
-  - "K_1"
-  - "M_2"
-interactions: "/home/anjishnubose/Research/Repos/RPA.jl/saves/interactions/honeycomb_general.jld2"
+- \Gamma
+- K_1
+- M_2
+k_points:
+- - 0.0
+  - 0.0
+  - 0.0
+- - 0.666666666667
+  - 0.333333333333
+  - 0.0
+- - 0.5
+  - 0.5
+  - 0.0
+k_size: 96
+mus:
+  n: 21
+  values:
+  - -3.0
+  - -2.7
+  - -2.4
+  - -2.1
+  - -1.8
+  - -1.5
+  - -1.2000000000000002
+  - -0.8999999999999999
+  - -0.6000000000000001
+  - -0.30000000000000027
+  - 0.0
+  - 0.2999999999999998
+  - 0.5999999999999996
+  - 0.8999999999999999
+  - 1.2000000000000002
+  - 1.5
+  - 1.7999999999999998
+  - 2.0999999999999996
+  - 2.3999999999999995
+  - 2.7
+  - 3.0
+n_matsubara: 60
+output: /home/anjishnubose/Research/Repos/RPA.jl/saves/data/graphene
+plots: /home/anjishnubose/Research/Repos/RPA.jl/saves/plots/graphene
+triqs_environment: triqs
+unitcell:
+  julia: /home/anjishnubose/Research/Repos/RPA.jl/saves/models/graphene.jld2
+  triqs: /home/anjishnubose/Research/Repos/RPA.jl/saves/models/graphene.npz

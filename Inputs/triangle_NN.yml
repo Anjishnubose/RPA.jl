@@ -1,40 +1,54 @@
-k_size: 96
-contract: "path"
-output: "/home/anjishnubose/Research/Repos/RPA.jl/saves/data/triangle_NN"
-k_points:
-  -
-    - 0.0
-    - 0.0
-    - 0.0
-  -
-    - 0.666666666667
-    - 0.333333333333
-    - 0.0
-  -
-    - 0.5
-    - 0.5
-    - 0.0
-mus:
-  values:
-    - 0.834320068359375
-    - 0.5
-    - 0.0
-    - -0.5
-  n: 1
-unitcell:
-  julia: "/home/anjishnubose/Research/Repos/RPA.jl/saves/models/triangle_NN.jld2"
-  triqs: "/home/anjishnubose/Research/Repos/RPA.jl/saves/models/triangle_NN.npz"
-plots: "/home/anjishnubose/Research/Repos/RPA.jl/saves/plots/triangle_NN"
-n_matsubara: 120
-triqs_environment: "triqs"
-directions:
-  - 0
-  - 1
-  - 2
-  - 3
 beta: 20.0
+contract: path
+directions:
+- 0
+- 1
+- 2
+- 3
+interactions: /home/anjishnubose/Research/Repos/RPA.jl/saves/interactions/triangle_general.jld2
 k_labels:
-  - "\\Gamma"
-  - "K_1"
-  - "M_2"
-interactions: "/home/anjishnubose/Research/Repos/RPA.jl/saves/interactions/triangle_general.jld2"
+- \Gamma
+- K_1
+- M_2
+k_points:
+- - 0.0
+  - 0.0
+  - 0.0
+- - 0.666666666667
+  - 0.333333333333
+  - 0.0
+- - 0.5
+  - 0.5
+  - 0.0
+k_size: 96
+mus:
+  n: 21
+  values:
+  - -6.0
+  - -5.55
+  - -5.1
+  - -4.65
+  - -4.2
+  - -3.75
+  - -3.3
+  - -2.85
+  - -2.4
+  - -1.9500000000000002
+  - -1.5
+  - -1.0499999999999998
+  - -0.5999999999999996
+  - -0.14999999999999947
+  - 0.2999999999999998
+  - 0.75
+  - 1.2000000000000002
+  - 1.6500000000000004
+  - 2.0999999999999996
+  - 2.5500000000000007
+  - 3.0
+n_matsubara: 120
+output: /home/anjishnubose/Research/Repos/RPA.jl/saves/data/triangle_NN
+plots: /home/anjishnubose/Research/Repos/RPA.jl/saves/plots/triangle_NN
+triqs_environment: triqs
+unitcell:
+  julia: /home/anjishnubose/Research/Repos/RPA.jl/saves/models/triangle_NN.jld2
+  triqs: /home/anjishnubose/Research/Repos/RPA.jl/saves/models/triangle_NN.npz

@@ -16,19 +16,19 @@ AddBasisSite!( UC , b1 )
 AddBasisSite!( UC , b2 )
 
 #####* Adding a parameter which tracks the nearest neighbor Heisenberg interaction in the spin-spin basis
-const J1  =   +0.0
+const J1  =   +1.0
 J1Param   =   Param(J1, 2)
 AddIsotropicBonds!(J1Param, UC , firstNNdistance,
     [0.0 0.0 0.0 0.0 ; 0.0 1.0 0.0 0.0 ; 0.0 0.0 1.0 0.0 ; 0.0 0.0 0.0 1.0] ,
     "J1 Heisenberg")
 
-const U  =   -1.0
+const U  =   +1.0
 UParam   =   Param(U, 2)
 AddIsotropicBonds!(UParam, UC , 0.0,
     [1.0 0.0 0.0 0.0 ; 0.0 0.0 0.0 0.0 ; 0.0 0.0 0.0 0.0 ; 0.0 0.0 0.0 -1.0] ,
     "On-site Hubbard")
 
-const V  =   +0.0
+const V  =   +1.0
 VParam   =   Param(V, 2)
 AddIsotropicBonds!(VParam, UC , firstNNdistance,
     [1.0 0.0 0.0 0.0 ; 0.0 0.0 0.0 0.0 ; 0.0 0.0 0.0 0.0 ; 0.0 0.0 0.0 0.0] ,
@@ -36,7 +36,18 @@ AddIsotropicBonds!(VParam, UC , firstNNdistance,
 
 params = [J1Param, UParam, VParam]
 
+#####* multiple different interactions to run RPA on
+values = Dict()
+values["NN_AFM_Heisenberg"] = [1.0, 0.0, 0.0]
+values["NN_FM_Heisenberg"] = [-1.0, 0.0, 0.0]
+values["On-site_repulsive_Hubbard"] = [0.0, 1.0, 0.0]
+values["On-site_attractive_Hubbard"] = [0.0, -1.0, 0.0]
+values["NN_repulsive_density-density"] = [0.0, 0.0, 1.0]
+values["NN_attractive_density-density"] = [0.0, 0.0, -1.0]
+
+
+
 
 #####* Saving the unit cell in a JLD2 file
 file_name = "../../saves/interactions/honeycomb_general.jld2"
-save(file_name, Dict("parameters" => params))
+save(file_name, Dict("parameters" => params, "values" => values))
