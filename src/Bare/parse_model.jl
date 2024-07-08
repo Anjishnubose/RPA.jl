@@ -32,7 +32,10 @@ function parse_unitcell(uc::UnitCell ;)::Dict{String, Any}
         end
 
         hoppings[offset][b1 : b1 + uc.localDim - 1, b2 : b2 + uc.localDim - 1] += value
-        hoppings[.-(offset)][b2 : b2 + uc.localDim - 1, b1 : b1 + uc.localDim - 1] += collect(value')
+
+        if !((collect(offset)==zeros(length(offset))) && (i==j))
+            hoppings[.-(offset)][b2 : b2 + uc.localDim - 1, b1 : b1 + uc.localDim - 1] += collect(value')
+        end
     end
 
     offsets = collect(keys(hoppings))

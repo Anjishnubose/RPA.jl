@@ -100,7 +100,8 @@ if abspath(PROGRAM_FILE) == @__FILE__
 
             instability = find_instability(chis, ks; primitives = primitives,
                 subs = subs, localDim=localDim,
-                lookup = lookup)
+                lookup = lookup,
+                upper=20.0,)
 
             critical = instability["critical strength"]
             strengths = collect(LinRange(0.0, 0.99*critical, 6))[2:end]
