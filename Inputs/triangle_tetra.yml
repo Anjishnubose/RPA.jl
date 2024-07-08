@@ -1,5 +1,5 @@
 contract: "path"
-k_size: 24
+k_size: 48
 output: "/home/anjishnubose/Research/Repos/RPA.jl/saves/data/triangle_tetra"
 k_points:
   -
