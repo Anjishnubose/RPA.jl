@@ -30,10 +30,10 @@ Qs = Qs[args]
 
 Qplot = plot(fillings, norm.(Qs), marker=:o, lw = 2.0,
     label = "", ylabel=L"|Q_{crit}|", xlabel = L"\langle n \rangle",
-    framestyle=:box, grid=false)
+    framestyle=:box, grid=false, xlims = (0.2, 1.0))
 hline!(Qplot, [4*pi/3], lw=2.0, l=:dash, c=:green, label=L"K")
 hline!(Qplot, [2*pi/sqrt(3)], lw=2.0, l=:dash, c=:turquoise, label=L"M")
 
 Iplot = plot(fillings, Vs, marker=:o, lw = 2.0,
     label = "", ylabel=L"|V_{crit}|", xlabel = L"\langle n \rangle",
-    framestyle=:box, grid=false)
+    framestyle=:box, grid=false, ylims=(0.0, 20.0))
