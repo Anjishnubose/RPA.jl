@@ -75,14 +75,6 @@ if __name__=="__main__":
 
 
         fileName = params["output"] + f"_beta={beta}_mu={np.round(mu, 3)}.npz"
-        
-        # np.savez(fileName,
-        #             beta = beta, mu = mu, filling=fillings[index], 
-        #             primitives=model.units, reciprocal = kmesh.bz.units, 
-        #             ks = ks, path = path_vecs, path_plot = path_plot, path_ticks = path_ticks,
-        #             contracted = ks_contract, 
-        #             bandwidth = np.array(bandwidth), bands = np.array([mdl.energies(k, hamiltonian) for k in path_vecs]))
-        
         np.savez(fileName, **output,
                     beta = beta, mu = mu, filling=fillings[index], 
                     primitives=model.units, reciprocal = kmesh.bz.units, 
