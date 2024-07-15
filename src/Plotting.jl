@@ -16,7 +16,7 @@ function plot_chi(chis::Vector{Matrix{ComplexF64}}; kwargs...)
     egs = eigen.(chis)
     egvals = getproperty.(egs, :values)
 
-    p = plot(framestyle = :box, grid=false, title=L"\chi(Q, \Omega=0)"; kwargs...)
+    p = plot(framestyle = :box, grid=false, title=L"\chi(Q, \Omega=0)")
     for i in 1:n
         plot!(xs, real.(getindex.(egvals, i)), label = "", lw=2.0)
     end
@@ -32,14 +32,6 @@ function plot_chi(chis::Vector{Matrix{ComplexF64}}, strength::Float64, ks::Vecto
     interaction_mats = interaction(strength, ks;
         primitives = kwargs[:primitives], subs = kwargs[:subs],
         localDim = kwargs[:localDim], lookup = kwargs[:lookup])
-
-    chi_RPA = perform_RPA.(chis, interaction_mats ; return_matrix = true)
-
-    return plot_chi(chi_RPA; kwargs...)
-end
-
-
-function plot_chi(chis::Vector{Matrix{ComplexF64}}, interaction_mats::Vector{Matrix{ComplexF64}}; kwargs...)
 
     chi_RPA = perform_RPA.(chis, interaction_mats ; return_matrix = true)
 
