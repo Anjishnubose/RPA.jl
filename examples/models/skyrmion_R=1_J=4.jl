@@ -35,7 +35,7 @@ AddAnisotropicBond!(JParam, UC, 3, 3, [0, 0], -SpinVec[3], 0.0, "skyrmion Hunds"
 params = [t1Param, JParam]
 CreateUnitCell!(UC, params)
 
-Plot_UnitCell!(UC)
+# Plot_UnitCell!(UC)
 
 const kSize   =   6 * 30 + 3   ##### a Monkhorst grid of size N = 6n+3 covers all the High-symemtry points.
 bz            =   BZ([kSize, kSize])    ##### Make the BZ explicitly in 2d
