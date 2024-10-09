@@ -23,14 +23,19 @@ const t1  =   -1.0
 t1Param   =   Param(t1, 2)
 AddIsotropicBonds!(t1Param, UC , firstNNdistance, 2*SpinVec[3] , "t1")
 
-const t3  =   -0.2
+const t3  =   -0.1
 t3Param   =   Param(t3, 2)
 AddIsotropicBonds!(t3Param, UC , thirdNNdistance, 2*SpinVec[3] , "t3")
 
+const Bx = -4.0
+BxParam = Param(Bx, 2)
+AddIsotropicBonds!(BxParam, UC, 0.0, SpinVec[1], "Bx")
+
+
 #####* Adding the parameter to the unit cell
-params = [t1Param, t3Param]
+params = [t1Param, t3Param, BxParam]
 CreateUnitCell!(UC, params)
 
 #####* Saving the unit cell in a JLD2 file
-file_name = "../../saves/models/bcao_Dirac.jld2"
+file_name = "../../saves/models/bcao_Dirac_t3=$(round(t3, digits=2))_Bx=$(round(Bx, digits=2)).jld2"
 save(file_name, Dict("unit cell" => UC, "parameters" => params))

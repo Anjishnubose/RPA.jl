@@ -15,7 +15,7 @@ UC = UnitCell( [a1 , a2] , 2 )
 AddBasisSite!( UC , b1 )
 AddBasisSite!( UC , b2 )
 
-const λ = 0.0
+const λ = 0.25
 
 #####* Adding a parameter which tracks the nearest neighbor Heisenberg interaction in the spin-spin basis
 const J1  =   +1.0
@@ -33,7 +33,7 @@ AddIsotropicBonds!(J3Param, UC , thirdNNdistance,
 params = [J1Param, J3Param]
 
 #####* multiple different interactions to run RPA on
-const thetas = collect(LinRange(0, 1, 201))
+const thetas = collect(LinRange(0.0, 1.0, 401))
 
 values = Dict()
 
@@ -42,5 +42,5 @@ for theta in thetas
 end
 
 #####* Saving the unit cell in a JLD2 file
-file_name = "../../saves/interactions/bcao_J1J3.jld2"
+file_name = "../../saves/interactions/bcao_J1J3_XXZ.jld2"
 save(file_name, Dict("parameters" => params, "values" => values))
