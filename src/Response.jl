@@ -73,7 +73,7 @@ function find_instability(chis::Vector{Matrix{ComplexF64}}, ks::Vector{Vector{Fl
 
         check = minima(eigenstates)
 
-        if check["minimum eigenvalue"] < 0.0
+        if check["minimum eigenvalue"] < -1e-6
             upper = current[end]
         else
             lower = current[end]
@@ -83,7 +83,7 @@ function find_instability(chis::Vector{Matrix{ComplexF64}}, ks::Vector{Vector{Fl
     primitives = get(kwargs, :primitives, [[0.0, 0.0], [0.0, 0.0]])
     d = length(primitives[begin])
 
-    if check["minimum eigenvalue"] < 0.0
+    if check["minimum eigenvalue"] < -1e-6
         interactions = interaction(lower, ks ; kwargs...)
         eigenstates = perform_RPA(chis, interactions)
 
