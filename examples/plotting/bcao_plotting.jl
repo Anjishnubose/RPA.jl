@@ -98,40 +98,82 @@ function PlotJs(data::Dict, Js::Vector{Float64}, Qs::Vector{Vector{Float64}}, th
     return p
 end
 
-function PlotPhaseDiagram(t3::Float64, Bxs::Vector{Float64})
+function PlotPhaseDiagram(t3::Float64, Bxs::Vector{Float64}, thetas::Vector{Float64}, J0::Float64, skip_every::Int64 = 1)
 
+    labels = ["theta = $(round(theta, digits=3))*2*pi" for theta in thetas]
+    p = plot(framestyle=:box, grid=false,
+                guidefont = "Computer Modern", tickfont = "Computer Modern", legendfont = "Computer Modern", titlefont = "Computer Modern",
+                guidefontsize = 14, tickfontsize = 12, legendfontsize = 12, titlefontsize = 14,
+                xlabel = L"J_3/J_1", ylabel = L"B_x/t_1", title = L"t_3 = %$(round(t3, digits=2))\,,J = %$(round(J0, digits=2))",
+                )
+
+    for Bx in Bxs
+        fileName = "/home/anjishnubose/Research/Repos/RPA.jl/saves/data/bcao_Dirac_t3=$(round(t3, digits=2))_Bx=$(round(Bx, digits=2))_combined.jld2"
+        data = load(fileName)
+        data = data["beta=20.0_mu=0.0"]
+
+        ks = data["triqs_data"]["contracted"]
+        ks = Vector{Float64}[eachrow(ks)...]
+
+        Js = Float64[]
+        Qs = Vector{Float64}[]
+
+        for label in labels
+            push!(Js, data[label]["critical strength"])
+            push!(Qs, data[label]["maximum momentum"])
+        end
+        m = cgrad(:darktest, rev=true)
+        colors = []
+        zcolors = data["triqs_data"]["path_plot"][indexin(Qs, ks)] / data["triqs_data"]["path_plot"][end]
+        for (j, J) in enumerate(Js)
+            if (J>J0)
+                push!(colors, :white)
+            else
+                push!(colors, m[zcolors[j]])
+            end
+        end
+
+        scatter!(tan.(thetas[1:skip_every:end]*2*pi), repeat([abs(Bx)], length(thetas))[1:skip_every:end],
+                markersize=8, markerstrokealpha=0.1, markercoloralpha = 0.75, markerstrokewidth=0.5,
+                markercolor = colors[1:skip_every:end], label = "")
+    end
+
+
+    return p
 
 end
 
 t3s = [-0.1, -0.2, -0.3, -0.33, -0.35, -0.37, -0.4, -0.5]
+Bxs = [0.0, -0.25, -0.5, -1.0, -2.0, -3.0, -4.0]
+thetas = collect(LinRange(0.0, 1.0, 401))[126:201]
 
 t3 = -0.2
 Bx = -4.0
 
 
-data = load("/home/anjishnubose/Research/Repos/RPA.jl/saves/data/bcao_Dirac_t3=$(round(t3, digits=2))_Bx=$(round(Bx, digits=2))_combined.jld2")
-data = data["beta=20.0_mu=0.0"]
+# data = load("/home/anjishnubose/Research/Repos/RPA.jl/saves/data/bcao_Dirac_t3=$(round(t3, digits=2))_Bx=$(round(Bx, digits=2))_combined.jld2")
+# data = data["beta=20.0_mu=0.0"]
 
-thetas = collect(LinRange(0, 1, 401))
+# thetas = collect(LinRange(0, 1, 401))
 labels = ["theta = $(round(theta, digits=3))*2*pi" for theta in thetas]
 
-ks = data["triqs_data"]["contracted"]
-ks = Vector{Float64}[eachrow(ks)...]
+# ks = data["triqs_data"]["contracted"]
+# ks = Vector{Float64}[eachrow(ks)...]
 
-Js = Float64[]
-Qs = Vector{Float64}[]
+# Js = Float64[]
+# Qs = Vector{Float64}[]
 
-for label in labels
-    push!(Js, data[label]["critical strength"])
-    push!(Qs, data[label]["maximum momentum"])
-end
+# for label in labels
+#     push!(Js, data[label]["critical strength"])
+#     push!(Qs, data[label]["maximum momentum"])
+# end
 
-pJ = PlotJs(data, Js, Qs, thetas)
-title!(pJ, L"t_3 = %$(round(t3, digits=2)), B_x = %$(round(Bx, digits=2))")
-savefig(pJ, "/home/anjishnubose/Research/Repos/RPA.jl/saves/plots/bcao_Dirac_t3=$(round(t3, digits=2))_Bx=$(round(Bx, digits=2))_Jcrit.pdf")
-pQ = PlotQs(data, Qs, thetas)
-title!(pQ, L"t_3 = %$(round(t3, digits=2)), B_x = %$(round(Bx, digits=2))")
-savefig(pQ, "/home/anjishnubose/Research/Repos/RPA.jl/saves/plots/bcao_Dirac_t3=$(round(t3, digits=2))_Bx=$(round(Bx, digits=2))_Qcrit.pdf")
+# pJ = PlotJs(data, Js, Qs, thetas)
+# title!(pJ, L"t_3 = %$(round(t3, digits=2)), B_x = %$(round(Bx, digits=2))")
+# savefig(pJ, "/home/anjishnubose/Research/Repos/RPA.jl/saves/plots/bcao_Dirac_t3=$(round(t3, digits=2))_Bx=$(round(Bx, digits=2))_Jcrit.pdf")
+# pQ = PlotQs(data, Qs, thetas)
+# title!(pQ, L"t_3 = %$(round(t3, digits=2)), B_x = %$(round(Bx, digits=2))")
+# savefig(pQ, "/home/anjishnubose/Research/Repos/RPA.jl/saves/plots/bcao_Dirac_t3=$(round(t3, digits=2))_Bx=$(round(Bx, digits=2))_Qcrit.pdf")
 
 
 # for t3 in t3s
