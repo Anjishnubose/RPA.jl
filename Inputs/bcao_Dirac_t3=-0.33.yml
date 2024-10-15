@@ -1,6 +1,6 @@
 k_size: 144
 contract: "path"
-output: "/home/anjishnubose/Research/Repos/RPA.jl/saves/data/bcao_Dirac"
+output: "/home/anjishnubose/Research/Repos/RPA.jl/saves/data/bcao_Dirac_t3=-0.33"
 k_points:
   -
     - 0.0
@@ -15,8 +15,8 @@ k_points:
     - 0.5
     - 0.0
 unitcell:
-  julia: "/home/anjishnubose/Research/Repos/RPA.jl/saves/models/bcao_Dirac.jld2"
-  triqs: "/home/anjishnubose/Research/Repos/RPA.jl/saves/models/bcao_Dirac.npz"
+  julia: "/home/anjishnubose/Research/Repos/RPA.jl/saves/models/bcao_Dirac_t3=-0.33.jld2"
+  triqs: "/home/anjishnubose/Research/Repos/RPA.jl/saves/models/bcao_Dirac_t3=-0.33.npz"
 mus:
   values:
     - 0.0
@@ -33,4 +33,4 @@ k_labels:
   - "\\Gamma"
   - "K_1"
   - "M_2"
-interactions: "/home/anjishnubose/Research/Repos/RPA.jl/saves/interactions/bcao_J1J3_denser.jld2"
+interactions: "/home/anjishnubose/Research/Repos/RPA.jl/saves/interactions/bcao_J1J3_XXZ.jld2"
