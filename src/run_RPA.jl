@@ -131,6 +131,6 @@ if abspath(PROGRAM_FILE) == @__FILE__
 
     end
 
-    save(input["output"] * "_combined.jld2", CombinedOutput)
+    save(input["output"] * "_combined_new.jld2", CombinedOutput)
 
 end

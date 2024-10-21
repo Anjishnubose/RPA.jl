@@ -15,14 +15,27 @@ UC = UnitCell( [a1 , a2] , 2 )
 AddBasisSite!( UC , b1 )
 AddBasisSite!( UC , b2 )
 
-const λ = 0.25
+function anisotropy(D::Float64, E::Float64, theta::Float64)
+    return (D*cos(2*theta)-E*sin(2*theta), D*sin(2*theta)+E*cos(2*theta))
+end
+
+const λ = 0.0
+const D = -0.1
+const E = -D
+const theta = 2*pi/3
 
 #####* Adding a parameter which tracks the nearest neighbor Heisenberg interaction in the spin-spin basis
 const J1  =   +1.0
 J1Param   =   Param(J1, 2)
-AddIsotropicBonds!(J1Param, UC , firstNNdistance,
-    [1.0 0.0 0.0 ; 0.0 1.0 0.0 ; 0.0 0.0 λ] ,
-    "J1 XXZ")
+d, e = anisotropy(D, E, 0*theta)
+AddAnisotropicBond!(J1Param, UC, 1, 2, [ 0, 0], [1.0+d e 0.0 ; e 1.0-d 0.0 ; 0.0 0.0 λ], firstNNdistance, "J1 XXZ")
+d, e = anisotropy(D, E, 1*theta)
+AddAnisotropicBond!(J1Param, UC, 1, 2, [-1, 0], [1.0+d e 0.0 ; e 1.0-d 0.0 ; 0.0 0.0 λ], firstNNdistance, "J1 XXZ")
+d, e = anisotropy(D, E, 2*theta)
+AddAnisotropicBond!(J1Param, UC, 1, 2, [ 0,-1], [1.0+d e 0.0 ; e 1.0-d 0.0 ; 0.0 0.0 λ], firstNNdistance, "J1 XXZ")
+# AddIsotropicBonds!(J1Param, UC , firstNNdistance,
+#     [1.0 0.0 0.0 ; 0.0 1.0 0.0 ; 0.0 0.0 λ] ,
+#     "J1 XXZ")
 
 const J3  =   +1.0
 J3Param   =   Param(J3, 2)
@@ -42,5 +55,5 @@ for theta in thetas
 end
 
 #####* Saving the unit cell in a JLD2 file
-file_name = "../../saves/interactions/bcao_J1J3_XXZ.jld2"
+file_name = "../../saves/interactions/bcao_J1J3_wAnisotropy.jld2"
 save(file_name, Dict("parameters" => params, "values" => values))
