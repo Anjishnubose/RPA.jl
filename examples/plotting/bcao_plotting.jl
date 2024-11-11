@@ -215,7 +215,7 @@ end
 
 
 function PlotAlphaPD(data::Dict, thetas::Vector{Float64};
-        starting::Int64 = 91, skip_every::Int64 = 1, ending::Int64 = length(thetas),
+        starting::Int64 = 151, skip_every::Int64 = 1, ending::Int64 = 201,
         chi::Float64 = 0.13,
         ar::Float64 = 1.0,
         classical_boundaries::Vector{Float64} = [-0.4, -0.25])
@@ -227,17 +227,18 @@ function PlotAlphaPD(data::Dict, thetas::Vector{Float64};
 
     xs, ys = findAlpha(thetas[starting:skip_every:ending]*2*pi, Js, chi, ar)
 
-    spiral_start = findfirst(x -> abs(x-0.63) > 0.05 , output["colors"][starting:skip_every:ending])
+    spiral_start = findfirst(x -> abs(x-0.63) > 0.01 , output["colors"][starting:skip_every:ending])
     spiral_end = findfirst(x -> abs(x) < 0.05 , output["colors"][starting:skip_every:ending])
     spiral_start = (xs[spiral_start], ys[spiral_start])
-    println(spiral_start)
     spiral_end = (xs[spiral_end-1], ys[spiral_end-1])
+    @show spiral_start
+    @show spiral_end
 
-    shift = 0.0
+    shift = -0.005
     boundary1xs = collect(LinRange(spiral_start[1], classical_boundaries[1]+shift, 101))
     boundary1ys = parabola(spiral_start[1], spiral_start[2], classical_boundaries[1]+shift).(boundary1xs)
 
-    shift = 0.01
+    shift = 0.0
     boundary2xs = collect(LinRange(spiral_end[1], classical_boundaries[2]+shift, 101))
     boundary2ys = parabola(spiral_end[1], spiral_end[2], classical_boundaries[2]+shift).(boundary2xs)
     gr()
@@ -247,51 +248,63 @@ function PlotAlphaPD(data::Dict, thetas::Vector{Float64};
     xlabel = L"J_3/J_1",
     guidefont = "Computer Modern", legendfont = "Computer Modern", tickfont = "Computer Modern",
     guidefontsize = 14, tickfontsize = 12, legendfontsize = 12,
-    ylims = (-0.15, 1.05),
-    xlims = (-1.05, 0.025))
+    ylims = (-0.15, 1.15),
+    xlims = (0.09,0.51))
 
-    plot!(boundary1xs, boundary1ys, lw=4, c=color_ZZ, label="", linealpha = 0.6)
-    plot!(boundary2xs, boundary2ys, lw=4, c=color_FM, label="", linealpha = 0.6)
+    plot!(-boundary1xs, boundary1ys, lw=4, c=color_ZZ, label="", linealpha = 0.6)
+    plot!(-boundary2xs, boundary2ys, lw=4, c=color_FM, label="", linealpha = 0.6)
 
-    scatter!(xs, ys, label = L"\alpha_3/\alpha_1=%$(round(ar, digits=2))",
+    scatter!(-xs, ys, label = L"\alpha_3/\alpha_1=%$(round(ar, digits=2))",
     marker=:circle, lw=2.0, legend_position=:topleft,
     markersize = 6, markerstrokealpha = 0.25,
     markercolors = cgrad(:darktest, rev=true)[output["colors"][starting:skip_every:ending]],
-    ylims = (-0.15, 1.05),
-    xlims = (-1.05, 0.025))
+    ylims = (-0.15, 1.15),
+    xlims = (0.09, 0.51))
 
-    zz_center = ((-1.05+classical_boundaries[1])/2, 0.0)
-    zz_dimensions = (classical_boundaries[1]+1.05, 0.1)
-    annotatewithbox!(p, text(L"Zig-Zag", :black, :center, 12, "Computer Modern"),
+    zz_center = (-(-0.5+classical_boundaries[1])/2, 0.0)
+    zz_dimensions = (classical_boundaries[1]+0.52, 0.1)
+    annotatewithbox!(p, text("Zig-Zag", :black, :center, 12, "Computer Modern"),
                 zz_center..., zz_dimensions..., color = color_ZZ)
 
-    ferro_center = ((0.025+classical_boundaries[2])/2, 0.0)
-    ferro_dimensions = (classical_boundaries[2]-0.025, 0.1)
-    annotatewithbox!(p, text(L"FM", :black, :center, 12, "Computer Modern"),
+    ferro_center = (-(-0.1+classical_boundaries[2])/2, 0.0)
+    ferro_dimensions = (classical_boundaries[2]+0.08, 0.1)
+    annotatewithbox!(p, text("FM", :black, :center, 12, "Computer Modern"),
                 ferro_center..., ferro_dimensions..., color = color_FM)
 
-    spiral_center = ((classical_boundaries[1]+classical_boundaries[2])/2, 0.0)
+    spiral_center = (-(classical_boundaries[1]+classical_boundaries[2])/2, 0.0)
     spiral_dimensions = (classical_boundaries[2]-classical_boundaries[1], 0.1)
-    annotatewithbox!(p, text(L"Spiral", :black, :center, 12, "Computer Modern"),
+    annotatewithbox!(p, text("Spiral", :black, :center, 12, "Computer Modern"),
                 spiral_center..., spiral_dimensions..., color = color_SpiralM)
 
-    annotate!(-0.5, -0.1, text("Classical", :black, :center, 12, "Computer Modern"))
-    annotate!(-0.5, 0.95, text("Dirac SL", :black, :center, 12, "Computer Modern"))
+    dsl_center = (0.315, 1.0)
+    dsl_dimensions = (0.6, 0.1)
+    annotatewithbox!(p, text("Partially Polarized DSL", :black, :center, 12, "Computer Modern"),
+                dsl_center..., dsl_dimensions..., color = theme_palette(:auto)[2])
+    # annotatewithbox!(p, text("DSL", :black, :center, 12, "Computer Modern"),
+    #             dsl_center..., dsl_dimensions..., color = theme_palette(:auto)[1])
 
+    annotate!(+0.3, -0.1, text("Classical", :black, :center, 12, "Computer Modern"))
+    annotate!(+0.3, 1.1, text("Quantum", :black, :center, 12, "Computer Modern"))
+    annotate!(+0.15, 0.7, text("Metamagnetic", :black, :center, 10, "Computer Modern"))
+    # plot!(LinRange(0.3, 0.37, 101), repeat([0.6], 101), lw=1.5, c=:black, l=:dash, label="")
+    annotate!(+0.31, 0.4, text(L"\mathbf{\Gamma}\rightarrow \mathbf{M}", :black, :center, 10, "Computer Modern"))
+    # annotate!(+0.335, 0.65, text(L"\mathbf{\Gamma}\rightarrow \mathbf{K}", :black, :center, 10, "Computer Modern"))
+    scatter!([0.28], [0.775], label = "", marker=:star6, markersize=7, markercolor=:plum2)
     return p
 end
 
 
 
-const t3 = -0.2
-const Bx = 0.0
+const t3 = -0.1
+const Bx = -1.0
 
 # data = load("./saves/data/bcao_Dirac_t3=$(round(t3, digits=2))_Bx=$(round(Bx, digits=2))_combined.jld2")
 data = load("./saves/data/bcao_Dirac_t3=$(round(t3, digits=2))_combined.jld2")
-thetas = collect(LinRange(0.25, 0.5, 101))
+thetas = collect(LinRange(0.0, 1.0, 401))
 labels = ["theta = $(round(theta, digits=3))*2*pi" for theta in thetas]
 
-# data = readData(data, thetas)
+dataR = readData(data, thetas)
+# data = data["beta=20.0_mu=0.0"]
 
 # const skip_every = 1
 # title = ""
