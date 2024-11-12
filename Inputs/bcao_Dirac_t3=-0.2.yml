@@ -33,4 +33,4 @@ k_labels:
   - "\\Gamma"
   - "K_1"
   - "M_2"
-interactions: "/home/anjishnubose/Research/Repos/RPA.jl/saves/interactions/bcao_J1J3_full.jld2"
+interactions: "/home/anjishnubose/Research/Repos/RPA.jl/saves/interactions/bcao_J1J3_wAnisotropy.jld2"
