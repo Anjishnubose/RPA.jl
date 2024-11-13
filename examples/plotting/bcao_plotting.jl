@@ -243,18 +243,23 @@ function PlotAlphaPD(data::Dict, thetas::Vector{Float64};
     boundary2ys = parabola(spiral_end[1], spiral_end[2], classical_boundaries[2]+shift).(boundary2xs)
     gr()
     p = scatter(
-    ylabel = L"\alpha",
-    framestyle=:box, grid = false, label = "",
-    xlabel = L"J_3/J_1",
-    guidefont = "Computer Modern", legendfont = "Computer Modern", tickfont = "Computer Modern",
-    guidefontsize = 14, tickfontsize = 12, legendfontsize = 12,
-    ylims = (-0.15, 1.15),
-    xlims = (0.09,0.51))
+        ylabel = L"\alpha",
+        framestyle=:box, grid = false, label = "",
+        xlabel = L"J_3/J_1",
+        guidefont = "Computer Modern", legendfont = "Computer Modern", tickfont = "Computer Modern",
+        guidefontsize = 14, tickfontsize = 12, legendfontsize = 12,
+        ylims = (-0.15, 1.15),
+        xlims = (0.09,0.51),
+        title = L"\alpha_3/\alpha_1=%$(round(ar, digits=2))",
+        size = (600, 450))
 
     plot!(-boundary1xs, boundary1ys, lw=4, c=color_ZZ, label="", linealpha = 0.6)
     plot!(-boundary2xs, boundary2ys, lw=4, c=color_FM, label="", linealpha = 0.6)
 
-    scatter!(-xs, ys, label = L"\alpha_3/\alpha_1=%$(round(ar, digits=2))",
+    plot!(-xs, repeat([1.0], length(xs)), lw=0.0, c=RGBA(0.0, 0.0, 0.0, 0.1), label="",
+            fillrange = ys, fc=RGBA(theme_palette(:auto)[1], 0.4), linealpha = 0.0)
+
+    plot!(-xs, ys, label = "",
     marker=:circle, lw=2.0, legend_position=:topleft,
     markersize = 6, markerstrokealpha = 0.25,
     markercolors = cgrad(:darktest, rev=true)[output["colors"][starting:skip_every:ending]],
@@ -278,25 +283,25 @@ function PlotAlphaPD(data::Dict, thetas::Vector{Float64};
 
     dsl_center = (0.315, 1.0)
     dsl_dimensions = (0.6, 0.1)
-    annotatewithbox!(p, text("Partially Polarized DSL", :black, :center, 12, "Computer Modern"),
-                dsl_center..., dsl_dimensions..., color = theme_palette(:auto)[2])
-    # annotatewithbox!(p, text("DSL", :black, :center, 12, "Computer Modern"),
-    #             dsl_center..., dsl_dimensions..., color = theme_palette(:auto)[1])
+    # annotatewithbox!(p, text("Partially Polarized DSL", :black, :center, 12, "Computer Modern"),
+    #             dsl_center..., dsl_dimensions..., color = theme_palette(:auto)[2])
+    annotatewithbox!(p, text("DSL", :black, :center, 12, "Computer Modern"),
+                dsl_center..., dsl_dimensions..., color = theme_palette(:auto)[1])
 
     annotate!(+0.3, -0.1, text("Classical", :black, :center, 12, "Computer Modern"))
     annotate!(+0.3, 1.1, text("Quantum", :black, :center, 12, "Computer Modern"))
-    annotate!(+0.15, 0.7, text("Metamagnetic", :black, :center, 10, "Computer Modern"))
-    # plot!(LinRange(0.3, 0.37, 101), repeat([0.6], 101), lw=1.5, c=:black, l=:dash, label="")
-    annotate!(+0.31, 0.4, text(L"\mathbf{\Gamma}\rightarrow \mathbf{M}", :black, :center, 10, "Computer Modern"))
-    # annotate!(+0.335, 0.65, text(L"\mathbf{\Gamma}\rightarrow \mathbf{K}", :black, :center, 10, "Computer Modern"))
-    scatter!([0.28], [0.775], label = "", marker=:star6, markersize=7, markercolor=:plum2)
+    # annotate!(+0.15, 0.7, text("Metamagnetic", :black, :center, 10, "Computer Modern"))
+    plot!(LinRange(0.3, 0.37, 101), repeat([0.6], 101), lw=1.5, c=:black, l=:dash, label="")
+    annotate!(+0.335, 0.4, text(L"\mathbf{\Gamma}\rightarrow \mathbf{M}", :black, :center, 10, "Computer Modern"))
+    annotate!(+0.335, 0.65, text(L"\mathbf{\Gamma}\rightarrow \mathbf{K}", :black, :center, 10, "Computer Modern"))
+    scatter!([0.34], [0.775], label = "", marker=:star6, markersize=7, markercolor=:plum2)
     return p
 end
 
 
 
-const t3 = -0.1
-const Bx = -1.0
+const t3 = -0.2
+const Bx = 0.0
 
 # data = load("./saves/data/bcao_Dirac_t3=$(round(t3, digits=2))_Bx=$(round(Bx, digits=2))_combined.jld2")
 data = load("./saves/data/bcao_Dirac_t3=$(round(t3, digits=2))_combined.jld2")
