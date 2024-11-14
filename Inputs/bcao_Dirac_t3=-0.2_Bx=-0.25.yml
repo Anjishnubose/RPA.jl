@@ -1,36 +1,33 @@
 k_size: 144
 contract: "path"
-output: "/home/anjishnubose/Research/Repos/RPA.jl/saves/data/bcao_Dirac_t3=-0.2_Bx=-0.25"
+output: "../saves/data/bcao_Dirac_t3=-0.2_Bx=-0.25"
 k_points:
-  -
-    - 0.0
-    - 0.0
-    - 0.0
-  -
-    - 0.666666666667
-    - 0.333333333333
-    - 0.0
-  -
-    - 0.5
-    - 0.5
-    - 0.0
+- - 0.0
+  - 0.0
+  - 0.0
+- - 0.666666666667
+  - 0.333333333333
+  - 0.0
+- - 0.5
+  - 0.5
+  - 0.0
 unitcell:
-  julia: "/home/anjishnubose/Research/Repos/RPA.jl/saves/models/bcao_Dirac_t3=-0.2_Bx=-0.25.jld2"
-  triqs: "/home/anjishnubose/Research/Repos/RPA.jl/saves/models/bcao_Dirac_t3=-0.2_Bx=-0.25.npz"
+  julia: "../saves/models/bcao_Dirac_t3=-0.2_Bx=-0.25.jld2"
+  triqs: "../saves/models/bcao_Dirac_t3=-0.2_Bx=-0.25.npz"
 mus:
   values:
-    - 0.0
+  - 0.0
   n: 1
-plots: "/home/anjishnubose/Research/Repos/RPA.jl/saves/plots/bcao_Dirac"
+plots: "../saves/plots/bcao_Dirac"
 n_matsubara: 120
 triqs_environment: "triqs"
 directions:
-  - 1
-  - 2
-  - 3
+- 1
+- 2
+- 3
 beta: 20.0
 k_labels:
-  - "\\Gamma"
-  - "K_1"
-  - "M_2"
-interactions: "/home/anjishnubose/Research/Repos/RPA.jl/saves/interactions/bcao_J1J3_full.jld2"
+- "\\Gamma"
+- "K_1"
+- "M_2"
+interactions: "../saves/interactions/bcao_J1J3_full.jld2"

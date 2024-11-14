@@ -1,6 +1,6 @@
 k_size: 144
 contract: "path"
-output: "../saves/data/bcao_Dirac_t3=-0.2_Bx=-1.0"
+output: "../saves/data/bcao_Dirac_t3=-0.2_Bx=0.0"
 k_points:
 - - 0.0
   - 0.0
@@ -12,8 +12,8 @@ k_points:
   - 0.5
   - 0.0
 unitcell:
-  julia: "../saves/models/bcao_Dirac_t3=-0.2_Bx=-1.0.jld2"
-  triqs: "../saves/models/bcao_Dirac_t3=-0.2_Bx=-1.0.npz"
+  julia: "../saves/models/bcao_Dirac_t3=-0.2.jld2"
+  triqs: "../saves/models/bcao_Dirac_t3=-0.2.npz"
 mus:
   values:
   - 0.0

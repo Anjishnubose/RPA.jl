@@ -295,12 +295,12 @@ end
 
 
 
-const t3 = -0.1
-const Bx = -1.0
+const t3 = -0.2
+const Bx = -0.0
 
 # data = load("./saves/data/bcao_Dirac_t3=$(round(t3, digits=2))_Bx=$(round(Bx, digits=2))_combined.jld2")
 data = load("./saves/data/bcao_Dirac_t3=$(round(t3, digits=2))_combined.jld2")
-thetas = collect(LinRange(0.0, 1.0, 401))
+thetas = collect(LinRange(0.25, 0.5, 201))
 labels = ["theta = $(round(theta, digits=3))*2*pi" for theta in thetas]
 
 dataR = readData(data, thetas)
