@@ -37,4 +37,7 @@ if abspath(PROGRAM_FILE) == @__FILE__
     command = `conda run -n $(input["triqs_environment"]) python ./Bare/run_bare.py $(parsed_args["input"])`
     run(command)
 
+    command = `conda run -n $(input["triqs_environment"]) python ./Bare/plot_bare.py $(parsed_args["input"])`
+    run(command)
+
 end

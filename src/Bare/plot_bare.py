@@ -62,11 +62,19 @@ if __name__=="__main__":
         plt.grid(True)
         plt.savefig(f"{plotDirectory}_bands.png") 
         
+        #####* plotting the path
+        plt.clf()
+        k_vecs = data["path"]
+        plt.scatter(k_vecs[:,0], k_vecs[:,1]) 
+        plt.xlabel(r'$k_x$')
+        plt.ylabel(r'$k_y$')
+        plt.grid(True)
+        plt.savefig(f"{plotDirectory}_path.png")       
         #####* plotting all the bare susceptibilities.
-        for direction in params["directions"]:
-            plot_title = titles[direction]
-            saveFile = f"{plotDirectory}_{labels[direction]}_beta={beta}_mu={np.round(mu, 3)}.png"
-            plot_chi(data, direction, path_labels, plot_title, saveFile)
+        # for direction in params["directions"]:
+        #     plot_title = titles[direction]
+        #     saveFile = f"{plotDirectory}_{labels[direction]}_beta={beta}_mu={np.round(mu, 3)}.png"
+        #     plot_chi(data, direction, path_labels, plot_title, saveFile)
     
 
 

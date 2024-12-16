@@ -1,0 +1,36 @@
+k_size: 144
+contract: "path"
+output: "../saves/data/triangular_Dirac_Bz=0.0"
+k_points:
+  -
+    - 0.0
+    - 0.0
+    - 0.0
+  -
+    - 0.5
+    - 0.0
+    - 0.0
+  -
+    - 0.5
+    - 0.5
+    - 0.0
+unitcell:
+  julia: "../saves/models/triangular_Dirac_Bz=0.0.jld2"
+  triqs: "../saves/models/triangular_Dirac_Bz=0.0.npz"
+mus:
+  values:
+    - 0.0
+  n: 1
+plots: "../saves/plots/triangular_Dirac"
+n_matsubara: 120
+triqs_environment: "triqs"
+directions:
+  - 1
+  - 2
+  - 3
+beta: 20.0
+k_labels:
+  - "\\Gamma"
+  - "X"
+  - "M"
+interactions: "../saves/interactions/triangular_Jxxz.jld2"
