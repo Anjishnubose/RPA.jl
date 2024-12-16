@@ -58,7 +58,7 @@ function PlotQs(data::Dict, Qs::Vector{Vector{Float64}}, thetas::Vector{Float64}
         background_color_legend=RGBA(1.0, 1.0, 1.0, 0.9),
         xticks = ([0.0, 0.25*pi, 0.5*pi, 0.75*pi, pi, 1.25*pi, 1.5*pi, 1.75*pi],
             ["0", L"\frac{\pi}{4}", L"\frac{\pi}{2}", L"\frac{3\pi}{4}", L"\pi", L"\frac{5\pi}{4}", L"\frac{3\pi}{2}", L"\frac{7\pi}{4}"]),
-        xlabel = L"\theta=tan^{-1}\left(J_3/J_1\right)",
+        xlabel = L"\theta=tan^{-1}\left(J_z/J_{xx}\right)",
         marker=:o, lw=2.0, proj=:polar, legend_position=:bottomleft,
         markersize = 5, markerstrokealpha=0.25,
         m=cgrad(:darktest, rev=true), zcolor = colors[1:skip_every:end], clims=(0, 1),
